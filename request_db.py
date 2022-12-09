@@ -47,5 +47,11 @@ def select():
     result = cur.fetchall()
     for i in range(len(result)):
         temp = result[i]
-        print(f'{i + 1}. Участок №{temp[3]} - владелец {temp[0]} {temp[1]} {temp[2]}, площадь участка {temp[4]}кв.м, кадастровый номер: {temp[5]}')
+        if temp[3] == None:
+            print(f'{i + 1}. Участок №{temp[0]} - владелец не установлен, площадь участка {temp[1]}кв.м, кадастровый номер: {temp[2]}')
+        else:
+            cur.execute("SELECT Surname, Name, Middle_name FROM person, Plot WHERE person.id = Plot.owner")
+            temp_1 = cur.fetchall()
+            owner = temp_1[0][0] + ' ' + temp_1[1][0] + ' ' + temp_1[2][0]
+            print(f'{i + 1}. Участок №{temp[0]} - владелец {owner}, площадь участка {temp[1]}кв.м, кадастровый номер: {temp[2]}')
     db.close()
